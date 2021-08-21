@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="todo">
+    <div class="header">
+        <h1>ToDo</h1>
+        <div class="message-congratulation">
+            <div class="message-congratulation-text">Task Add!</div>
+        </div>
+    </div>
+    <div class="search-todo">
+        <div class="content-search">
+            <label>
+                <input class="search"><span>&nbsp;:Search task</span>
+            </label>
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="top-todo">
+        <label class="label-main">
+            <input class="input-main" placeholder="enter task">
+        </label>
+        <div class="buttons-top">
+            <button data-action="addHandler" class="button-add">Add</button>
+            <button data-action="clearCompletedTasksHandler" class="button-clear">Clear completed</button>
+            <button data-action="checkAllHandler" class="check-all">Check all</button>
+            <button data-action="showAllTasksHandler" class="show-all">All</button>
+            <button data-action="showActiveTasksHandler" class="active-all">Active</button>
+            <button data-action="showCompletedTasksHandler" class="completed-all">Completed</button>
+            <label>
+                <select class="sort">
+                    <option value="">Sort</option>
+                    <option value="sortImportanceUpHandler">importance up</option>
+                    <option value="sortImportanceDownHandler">importance down</option>
+                    <option value="sortDateUpHandler">date up</option>
+                    <option value="sortDateDownHandler">date down</option>
+                </select>
+            </label>
+        </div>
+        <div class="content-count"><span>Left tasks:</span>
+            <div class='counter-tasks'></div>
+        </div>
+    </div>
+    <ul class="tasks"></ul>
+    <br>
+    <br>
+    <!--<div class="content-middle">-->
+    <!--    <form class="from-comment">-->
+    <!--        <label class="from-comment__label-name">-->
+    <!--            Name:-->
+    <!--            <input class="from-comment__name" name="name" placeholder="name">-->
+    <!--        </label>-->
+    <!--        <label class="from-comment__label-comment">-->
+    <!--            Message:-->
+    <!--            Message:-->
+    <!--            <textarea class="from-comment__comment" name="comment" placeholder="comment"></textarea>-->
+    <!--        </label>-->
+    <!--        &lt;!&ndash;        <label class="from-comment__label-comment">&ndash;&gt;-->
+    <!--        &lt;!&ndash;            Image:&ndash;&gt;-->
+    <!--        &lt;!&ndash;            <input type="file" class="from-comment__image" name="image" placeholder="image">&ndash;&gt;-->
+    <!--        &lt;!&ndash;        </label>&ndash;&gt;-->
+    <!--        <button type="submit" class="from-comment__add">Add comment</button>-->
+    <!--    </form>-->
+    <!--    <div class="message-congratulation">-->
+    <!--        <div class="message-congratulation-text">Comment Add!</div>-->
+    <!--    </div>-->
+    <!--</div>-->
+    <!--    <h2 class="title-comment">Comments</h2>-->
+    <!--    <ul class="comments"></ul>-->
+    <!--    <br>-->
+    <!--    <br>-->
+
+</div>
+<!--<script src="script.js"></script>-->
+<!--<script src="js/script.js"></script>-->
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

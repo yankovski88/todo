@@ -1,0 +1,175 @@
+body {
+    background: lightgray;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 200px 300px;
+}
+
+.active {
+    border: solid 3px green;
+    background: lightslategray;
+}
+
+.leftContent {
+    display: flex;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    list-style-type: none;
+    border: black dashed 1px;
+}
+
+.edit {
+    margin-right: 5px;
+}
+
+.search-todo {
+    display: flex;
+}
+
+.content-search {
+    display: flex;
+}
+
+.todo {
+    width: 1100px;
+    margin: 0 auto;
+}
+
+.label-main {
+    margin-right: 5px;
+}
+
+.top-todo {
+    display: flex;
+}
+
+.content-count {
+    display: flex;
+    margin-left: 10px;
+}
+
+.rightContent {
+    display: flex;
+}
+
+.numberImportance {
+    display: flex;
+    justify-content: center;
+
+    min-width: 30px;
+    min-height: 10px;
+}
+
+.cowbell-range {
+    display: flex;
+}
+
+.cowbell-range {
+    margin-right: 5px;
+}
+
+.animated {
+    transition-property: background-color;
+    transition-duration: 3s;
+}
+
+.animatedTwo {
+    transition: font-size 3s, color 2s;
+}
+
+.dell:hover {
+    color: red;
+    font-size: 20px;
+    transition: font-size 3s, color 2s;
+}
+
+.message-congratulation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message-congratulation-text {
+    background-color: green;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 0;
+}
+
+@keyframes go-left-right { /* объявляем имя анимации: "go-left-right" */
+    from {
+        /*margin-left: 0px;*/
+    }
+    to {
+        /*margin-left: 50%;*/
+        padding: 15px;
+        font-size: 20px;
+    }
+}
+
+.animated-margin {
+    display: flex;
+    /*margin-left: 50%;*/
+    /*transition: margin-left 5s cubic-bezier(.5, -1, .5, 22), background-color 5s;*/
+
+    animation: go-left-right 3s 2 alternate;
+    /* применить анимацию "go-left-right" на элементе
+       продолжительностью 3 секунды
+       количество раз: бесконечно (infinite)
+       менять направление анимации каждый раз (alternate)
+    */
+}
+
+.content-middle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.title-comment {
+    display: flex;
+    justify-content: center;
+}
+
+.from-comment {
+    display: flex;
+    flex-direction: column;
+
+    width: 500px;
+}
+
+.from-comment__label-name {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 10px;
+}
+
+.from-comment__label-comment {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 10px;
+}
+
+.from-comment__add {
+    width: 50%;
+}
+
+.hidden {
+    display: none;
+}
+
+.disable-hidden {
+    display: block;
+}
+
+
+
