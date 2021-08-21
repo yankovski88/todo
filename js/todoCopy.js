@@ -22,93 +22,7 @@ export class Todo {
         this._elemInputAdd.addEventListener('input', () => {
             this.disabledButtonAdd();
         });
-
-        this.tasksElement.addEventListener('click', (event) => {
-            if (event.target.className === 'dell') {
-                const taskElement = event.target.parentElement.parentElement;
-                this.tasks.forEach((task, index) => {
-                    if (`id_task${task.id}` === taskElement.id) {
-                        this.tasks.splice(index, 1);
-                        this._storage.set(this.tasks);
-                        this.renderAllTask();
-
-                        this.setCounterTasksHandler();
-                    }
-                })
-            }
-
-            else if (event.target.className === 'edit') {
-                const taskElement = event.target.parentElement.parentElement;
-
-                this.tasks.forEach((task) => {
-                    if (`id_task${task.id}` === taskElement.id) {
-                        const inputEditElement = taskElement.querySelector('.input-edit')
-                        inputEditElement.classList.toggle('hidden')
-                    }
-                })
-            }
-
-            // функция которая следит за чекбоксами и изменяет на основании их массив
-                if (event.target.className === 'checkbox-done') {
-                    const taskElement = event.target.parentElement.parentElement;
-                    this.tasks.forEach((task) => {
-                        if (`id_task${task.id}` === taskElement.id) {
-                            if (event.target.hasAttribute('checked')) {
-                                event.target.removeAttribute('checked')
-                                this.tasks.forEach((task) => {
-                                    if (`id_${task.id}` === event.target.id) {
-                                        task.isChecked = false
-                                    }
-                                })
-                                this._storage.set(this.tasks)
-                            } else if (!event.target.hasAttribute('checked')) {
-                                event.target.setAttribute('checked', 'checked')
-                                this.tasks.forEach((task) => {
-                                    if (`id_${task.id}` === event.target.id) {
-                                        task.isChecked = true
-                                    }
-                                })
-                                this._storage.set(this.tasks)
-                            }
-                            this.setCounterTasksHandler();
-                        }
-                    })
-                }
-            return;
-        });
-
-
-        this.tasksElement.addEventListener('input', (event) => {
-            if (event.target.className === 'cowbell') {
-                const taskElement = event.target.parentElement.parentElement.parentElement;
-                this.tasks.forEach((task, index) => {
-                    if (`id_task${task.id}` === taskElement.id) {
-                        event.target.nextElementSibling.innerHTML = event.target.value
-                        task.importance = event.target.value;
-                        const upDateTasks = this.tasks.sort((a, b) => a.importance - b.importance)
-                        this._storage.set(upDateTasks)
-                    }
-                })
-            }
-            return;
-        });
-
-        this.tasksElement.addEventListener('change', (event) => {
-            if (event.target.className.split(' ')[0] === 'input-edit') {
-                const taskElement = event.target.parentElement.parentElement;
-                this.tasks.forEach((task, index) => {
-                    if (`id_task${task.id}` === taskElement.id) {
-                        task.text = event.target.value;
-                        this._storage.set(this.tasks);
-                        event.target.classList.add('hidden')
-                        this.renderAllTask();
-                    }
-                })
-            }
-            return;
-        });
     }
-
 
     // функция которая берет строку и массив и возвращает массив объектов в которых есть совпадение
     getCoincidenceTasks = (querySearch) => {
@@ -124,9 +38,9 @@ export class Todo {
         }
 
         this.tasksElement.insertAdjacentHTML('beforeend', `
-            <li id="id_task${item.id}" class="task">
+            <li class="task">
               <div class="leftContent">
-                <input id="id_${item.id}" class="checkbox-done" type="checkbox" ${item.isChecked ? "checked" : ``}>
+                <input id="id_${item.id}" type="checkbox" ${item.isChecked ? "checked" : ``}>
                 <input id="id_message-task${item.id}" class="input-edit hidden" placeholder="edit task" value=${item.text}>
                 <div class="message-task">${item.text}</div>
               </div>
@@ -188,7 +102,13 @@ export class Todo {
         this.disabledButtonAdd()
         this.renderAllTask();
 
+        this.rangeHandler()
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
+        this.setCheckedHandler();
         this.setCounterTasksHandler();
+        this.addAnimationHandler();
     }
 
     addAnimationHandler() {
@@ -216,6 +136,11 @@ export class Todo {
         this._storage.set(this.tasks)
         this.renderAllTask()
 
+        this.rangeHandler()
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
+        this.setCheckedHandler();
         this.setCounterTasksHandler();
     }
 
@@ -225,6 +150,11 @@ export class Todo {
         this._storage.set(this.tasks)
         this.renderAllTask()
 
+        this.rangeHandler()
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
+        this.setCheckedHandler();
         this.setCounterTasksHandler();
     }
 
@@ -248,6 +178,11 @@ export class Todo {
     showAllTasksHandler() {
         this.renderAllTask()
 
+        this.setCheckedHandler();
+        this.rangeHandler();
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
         this.setCounterTasksHandler();
     }
 
@@ -255,6 +190,11 @@ export class Todo {
     showActiveTasksHandler() {
         this.renderActiveTasks()
 
+        this.setCheckedHandler()
+        this.rangeHandler();
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
         this.setCounterTasksHandler();
     }
 
@@ -262,6 +202,11 @@ export class Todo {
     showCompletedTasksHandler() {
         this.renderCompletedTasks();
 
+        this.setCheckedHandler()
+        this.rangeHandler();
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
         this.setCounterTasksHandler();
     }
 
@@ -271,6 +216,33 @@ export class Todo {
         if (action) {
             this[action]()
         }
+    }
+
+    // функция которая следит за чекбоксами и изменяет на основании их массив
+    setCheckedHandler = () => {
+        const checkboxElements = this.tasksElement.querySelectorAll('input');
+        checkboxElements.forEach((checkbox) => {
+            checkbox.addEventListener('click', (event) => {
+                if (checkbox.hasAttribute('checked')) {
+                    checkbox.removeAttribute('checked')
+                    this.tasks.forEach((task) => {
+                        if (`id_${task.id}` === checkbox.id) {
+                            task.isChecked = false
+                        }
+                    })
+                    this._storage.set(this.tasks)
+                } else if (!checkbox.hasAttribute('checked')) {
+                    checkbox.setAttribute('checked', 'checked')
+                    this.tasks.forEach((task) => {
+                        if (`id_${task.id}` === checkbox.id) {
+                            task.isChecked = true
+                        }
+                    })
+                    this._storage.set(this.tasks)
+                }
+                this.setCounterTasksHandler();
+            })
+        })
     }
 
     // устанавливает счетчик активных тасков
@@ -295,6 +267,29 @@ export class Todo {
         })
     }
 
+    // функция по удалению таски
+    dellTaskHandler() {
+        const dellButtons = this.tasksElement.querySelectorAll('.dell')
+        dellButtons.forEach((delButton) => {
+            delButton.addEventListener('click', (event) => {
+                this.tasks.forEach((task, index) => {
+                    if (`id_${task.id}` === event.target.id) {
+                        this.tasks.splice(index, 1)
+                        this._storage.set(this.tasks)
+                        this.renderAllTask()
+
+                        this.rangeHandler()
+                        this.dellTaskHandler();
+                        this.editTaskHandler();
+                        this.toggleShowEditInputHandler();
+                        this.setCheckedHandler();
+                        this.setCounterTasksHandler();
+                    }
+                })
+            })
+        })
+    }
+
     setStartTasks() {
         // если есть массив в сторе, то сделай локальный таким же, иначе массив пустой
         this.tasks = this._storage.get();
@@ -311,11 +306,35 @@ export class Todo {
         return tasks.length
     }
 
+    rangeHandler() {
+        const cowbellElement = this.tasksElement.querySelectorAll('.cowbell')
+        cowbellElement.forEach((elem) => {
+            elem.addEventListener('input', (event) => {
+                let idElem = `#id_importance${event.target.id.slice(8, event.target.id.length)}`
+                const numberImportanceElement = elem.parentNode.querySelector('.numberImportance') //#id_importance637320
+                numberImportanceElement.innerHTML = event.target.value
+
+                this.tasks.forEach((task, index) => {
+                    if (`id_range${task.id}` === event.target.id) {
+                        task.importance = event.target.value;
+                        const upDateTasks = this.tasks.sort((a, b) => a.importance - b.importance)
+                        this._storage.set(upDateTasks)
+                    }
+                })
+            })
+        })
+    }
+
     sortImportanceUpHandler() {
         const upTasks = this.tasks.sort((a, b) => b.importance - a.importance)
         this.currentTasks = upTasks;
         this.renderTasks(upTasks)
 
+        this.rangeHandler();
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
+        this.setCheckedHandler();
         this.setCounterTasksHandler();
     }
 
@@ -325,6 +344,11 @@ export class Todo {
         this.currentTasks = downTasks;
         this.renderTasks(downTasks)
 
+        this.rangeHandler();
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
+        this.setCheckedHandler();
         this.setCounterTasksHandler();
     }
 
@@ -336,6 +360,11 @@ export class Todo {
         this.currentTasks = this.sortDateUpTasks();
         this.renderTasks(this.sortDateUpTasks())
 
+        this.rangeHandler();
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
+        this.setCheckedHandler();
         this.setCounterTasksHandler();
     }
 
@@ -343,6 +372,55 @@ export class Todo {
         this.currentTasks = this.tasks.sort((a, b) => b.date - a.date);
         this.renderTasks(this.tasks.sort((a, b) => b.date - a.date))
 
+        this.rangeHandler();
+        this.dellTaskHandler();
+        this.editTaskHandler();
+        this.toggleShowEditInputHandler();
+        this.setCheckedHandler();
         this.setCounterTasksHandler();
+    }
+
+    // слушатель на редактирование таски
+    toggleShowEditInputHandler() {
+        const editTaskElements = this.tasksElement.querySelectorAll('.edit')
+        editTaskElements.forEach((editTask) => {
+            editTask.addEventListener('click', (event) => {
+                this.tasks.forEach((task, index) => {
+                    if (`id_edit${task.id}` === event.target.id) {
+                        const inputEditElement = editTask.parentElement.parentElement.querySelector('.input-edit')
+                        inputEditElement.classList.toggle('disable-hidden')
+
+                        this.rangeHandler()
+                        this.dellTaskHandler();
+                        this.editTaskHandler();
+                        this.setCheckedHandler();
+                        this.setCounterTasksHandler();
+                    }
+                })
+            })
+        })
+    }
+
+    editTaskHandler = () => {
+        const editInputElements = this.tasksElement.querySelectorAll('.input-edit')
+        editInputElements.forEach((editInputElement) => {
+            editInputElement.addEventListener('change', (event) => {
+                this.tasks.forEach((task, index) => {
+                    if (`id_message-task${task.id}` === event.target.id) {
+                        task.text = event.target.value;
+                        this._storage.set(this.tasks)
+
+                        this.renderAllTask()
+
+                        this.rangeHandler()
+                        this.dellTaskHandler();
+                        this.toggleShowEditInputHandler();
+                        this.setCheckedHandler();
+                        this.setCounterTasksHandler();
+                        editInputElement.classList.add('hidden')
+                    }
+                })
+            })
+        })
     }
 }
