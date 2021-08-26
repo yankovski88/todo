@@ -35,9 +35,7 @@ export class Todo {
                         this.setCounterTasksHandler();
                     }
                 })
-            }
-
-            else if (event.target.className === 'edit') {
+            } else if (event.target.className === 'edit') {
                 const taskElement = event.target.parentElement.parentElement;
 
                 this.tasks.forEach((task) => {
@@ -46,35 +44,31 @@ export class Todo {
                         inputEditElement.classList.toggle('hidden')
                     }
                 })
-            }
-
-            // функция которая следит за чекбоксами и изменяет на основании их массив
-                if (event.target.className === 'checkbox-done') {
-                    const taskElement = event.target.parentElement.parentElement;
-                    this.tasks.forEach((task) => {
-                        if (`id_task${task.id}` === taskElement.id) {
-                            if (event.target.hasAttribute('checked')) {
-                                event.target.removeAttribute('checked')
-                                this.tasks.forEach((task) => {
-                                    if (`id_${task.id}` === event.target.id) {
-                                        task.isChecked = false
-                                    }
-                                })
-                                this._storage.set(this.tasks)
-                            } else if (!event.target.hasAttribute('checked')) {
-                                event.target.setAttribute('checked', 'checked')
-                                this.tasks.forEach((task) => {
-                                    if (`id_${task.id}` === event.target.id) {
-                                        task.isChecked = true
-                                    }
-                                })
-                                this._storage.set(this.tasks)
-                            }
-                            this.setCounterTasksHandler();
+            } else if (event.target.className === 'checkbox-done') { // функция которая следит за чекбоксами и изменяет на основании их массив
+                const taskElement = event.target.parentElement.parentElement;
+                this.tasks.forEach((task) => {
+                    if (`id_task${task.id}` === taskElement.id) {
+                        if (event.target.hasAttribute('checked')) {
+                            event.target.removeAttribute('checked')
+                            this.tasks.forEach((task) => {
+                                if (`id_${task.id}` === event.target.id) {
+                                    task.isChecked = false
+                                }
+                            })
+                            this._storage.set(this.tasks)
+                        } else if (!event.target.hasAttribute('checked')) {
+                            event.target.setAttribute('checked', 'checked')
+                            this.tasks.forEach((task) => {
+                                if (`id_${task.id}` === event.target.id) {
+                                    task.isChecked = true
+                                }
+                            })
+                            this._storage.set(this.tasks)
                         }
-                    })
-                }
-            return;
+                        this.setCounterTasksHandler();
+                    }
+                })
+            }
         });
 
 
@@ -90,7 +84,6 @@ export class Todo {
                     }
                 })
             }
-            return;
         });
 
         this.tasksElement.addEventListener('change', (event) => {
@@ -105,7 +98,6 @@ export class Todo {
                     }
                 })
             }
-            return;
         });
     }
 
@@ -189,6 +181,7 @@ export class Todo {
         this.renderAllTask();
 
         this.setCounterTasksHandler();
+        this.addAnimationHandler();
     }
 
     addAnimationHandler() {
